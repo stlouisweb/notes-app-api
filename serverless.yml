@@ -28,6 +28,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*:*"
+    - Effect: "Allow"
+      Action:
+        - xray:PutTelemetryRecords
+        - xray:PutTraceSegments
+      Resource: "*"
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -88,3 +93,36 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+resources:
+  Resources:
+    #add aws xray config to our functions
+    CreateLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        TracingConfig:
+          Mode:
+            Active
+    GetLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        TracingConfig:
+          Mode:
+            Active
+    DeleteLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        TracingConfig: 
+          Mode:
+            Active
+    ListLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        TracingConfig:
+          Mode:
+            Active
+    UpdateLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        TracingConfig:
+          Mode:
+            Active
